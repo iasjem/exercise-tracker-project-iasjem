@@ -41,8 +41,9 @@ router.post('/add', (req, res) => {
 router.get('/log/:username', (req, res) => {
   let from = req.query.from;
   let to = req.query.to;
-  let limit = req.query.limit || 0;
-  Exercise.find({ username: req.params.username }).limit(1).then((exercise) => {
+  let limit = parseInt(req.query.limit) || 0;
+
+  Exercise.find({ username: req.params.username }).limit(limit).then((exercise) => {
     let obj = {
       exercises: exercise,
       count: Array.from(exercise).length
