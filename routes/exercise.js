@@ -35,7 +35,7 @@ router.post('/add', (req, res) => {
   User.findOne({ username: exercise.username }).then((username) => {
     if (!username) return res.json({ error: "Username does not exist!" });
     return exercise.save().then(() => res.json(exercise), (e) => res.status(400).json({ error: e }));
-  });
+  }, (e) => res.status(400).json({ error: e }));
 });
 
 router.get('/log/:username', (req, res) => {
