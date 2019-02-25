@@ -31,8 +31,18 @@ router.post('/new-user', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-  const exercise = new Exercise({ _id: req.body.userId, description: req.body.description, duration: req.body.duration, date: req.body.date });
-  User.findOne({ username: exer })
+  const exercise = new Exercise({ username: req.body.userId, description: req.body.description, duration: req.body.duration, date: new Date(req.body.date)});
+  User.findOne({ username: exercise.username }).then((username) => {
+    if (!username) return res.json({ error: "Username does not exist!" });
+    return exercise.save().then(() => res.json(exercise), (e) => res.status(400).json({ error: e }));
+  });
+});
+
+router.get('/log/:username', (req, res) => {
+  const username = req.body.username;
+  Exercise.find({ username: username }).then((exercise) => {
+    res.json(exercise);
+  });
 });
 
 module.exports = router;
