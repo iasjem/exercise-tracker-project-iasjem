@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
 
-mongoose.model('Exercise', mongoose.Schema({
-  "_id": String,
+const Exercise = mongoose.model('Exercise', mongoose.Schema({
+  "_id": {
+    type: String,
+    require: true
+  },
   "description": String,
   duration: {
-    type: 
+    type: Number,
+    default: 0
   },
   date: {
     type: Date,
     default: new Date()
   }
 }));
+
+module.exports = { Exercise };
