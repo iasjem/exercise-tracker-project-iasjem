@@ -39,9 +39,13 @@ router.post('/add', (req, res) => {
 });
 
 router.get('/log/:username', (req, res) => {
-  const username = req.body.username;
-  Exercise.find({ username: username }).then((exercise) => {
-    res.json(exercise);
+  
+  Exercise.find({ username: req.params.username }).then((exercise) => {
+    let obj = {
+      exercises: exercise,
+      count: Array.from(exercise).length
+    };
+    res.send(JSON.stringify(obj, undefined, 2));
   });
 });
 
