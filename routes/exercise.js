@@ -9,8 +9,12 @@ router.use(bodyParser.json());
 
 router.post('/new-user', (req, res) => {
   const user = new User({ username: req.body.username });
-  User.find()
-  user.save().then(() => res.status(200).json(user), (e) => res.status(400).json({ error: e }));
+  const doUserExist = User.findOne({ username: user.username }).then((userID) => {
+    if(userID.username === user.username) return res.json({ error: "Username has already been taken!" });
+    user.save().then(() => res.status(200).json(user), (e) => res.status(400).json({ error: e }));
+  });
+  
+  
 });
 
 router.get('/users', (req, res) => {
