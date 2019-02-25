@@ -24,13 +24,15 @@ router.get('/users', (req, res) => {
 
 router.post('/new-user', (req, res) => {
   const user = new User({ username: req.body.username });
-  User.findOne({ username: user.username }).then((userID) => {
-      if(userID.username === user.username) {
-        res.json({ error: "Username has already been taken!" });
-      }
+  User.findOne({ username: user.username }).then((username) => {
+      if(username) return res.json({ error: "Username has already been taken!" });
+      return user.save().then(() => res.json(user), (e) => res.status(400).json({ error: e }));
   });
 });
 
-router.post('/add', (req, res) => res.send('add exercise'));
+router.post('/add', (req, res) => {
+  const exercise = new Exercise({ _id: req.body.userId, description: req.body.description, duration: req.body.duration, date: req.body.date });
+  User.findOne({ username: exer })
+});
 
 module.exports = router;
